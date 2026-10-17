@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AiCartoonGuy Coloring Books</title>
+<meta name="description" content="Coloring books by AiCartoonGuy. Pick a book and buy it on Amazon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gluten:wght@600;800&family=Figtree:wght@400;600;800&display=swap">
+<style>
+/* Layout: a coloring-book page. Thick ink outlines on paper; each book is a framed panel; color is the reward. */
+:root {
+  --paper: #fffdf7;
+  --paper-2: #f3efe2;
+  --ink: #1d1a24;
+  --ink-soft: #5b5566;
+  --buy: #ff9f1c;
+  --buy-ink: #1d1a24;
+  --c-halloween: #ff8a3d;
+  --c-thanks: #d9a441;
+  --c-xmas: #3fa36b;
+  --c-winter: #7fb7e8;
+  --c-mermaid: #3cc6c0;
+  --c-witch: #8b6fd6;
+  --c-pinup: #ff7eb6;
+  --c-anime: #ff5e7a;
+  --font-display: "Gluten", "Comic Sans MS", "Chalkboard SE", cursive;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1b1922; --paper-2: #24212d; --ink: #f6f1e6; --ink-soft: #b9b2c6;
+    --buy: #ffb347; --buy-ink: #1b1922; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1b1922; --paper-2: #24212d; --ink: #f6f1e6; --ink-soft: #b9b2c6;
+  --buy: #ffb347; --buy-ink: #1b1922; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+img, svg { max-width: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+  background-image: radial-gradient(var(--paper-2) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+
+header.top {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding-block: 20px; flex-wrap: wrap;
+}
+.logo {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+  letter-spacing: 0.01em; color: var(--ink); text-decoration: none; line-height: 1;
+}
+.logo span { color: var(--c-halloween); }
+.nav-link { font-weight: 600; color: var(--ink); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+
+.hero {
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center;
+  padding-block: 24px 40px;
+}
+.hero h1 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.02; margin: 0 0 16px;
+  text-wrap: balance;
+}
+.hero h1 .scribble {
+  background: linear-gradient(transparent 58%, var(--c-mermaid) 58%, var(--c-mermaid) 88%, transparent 88%);
+  padding: 0 4px;
+}
+.hero p { margin: 0 0 20px; max-width: 34ch; color: var(--ink-soft); font-size: 1.1rem; }
+.hero .facts { display: flex; gap: 10px; flex-wrap: wrap; padding: 0; margin: 0; list-style: none; }
+.hero .facts li {
+  border: 2px solid var(--ink); border-radius: 999px; padding: 4px 14px;
+  font-weight: 600; font-size: 0.92rem; background: var(--paper);
+}
+.crayons { width: 100%; max-width: 420px; justify-self: center; }
+
+h2.section {
+  font-family: var(--font-display); font-weight: 800; font-size: 2rem; margin: 8px 0 20px;
+}
+
+.shelf {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;
+}
+.book {
+  display: flex; flex-direction: column; gap: 14px; min-width: 0;
+  background: var(--paper); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 14px; box-shadow: 6px 6px 0 var(--ink);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.book:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--ink); }
+
+.cover {
+  position: relative; aspect-ratio: 8.5 / 11; max-width: 100%;
+  border: 3px solid var(--ink); border-radius: 8px; overflow: hidden;
+  background: var(--tint);
+}
+.cover img {
+  display: block; width: 100%; height: 100%; object-fit: contain; background: var(--paper-2);
+}
+
+/* Featured "NEW" book: spans the whole shelf, wide art on the left */
+.book.featured {
+  grid-column: 1 / -1; display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; align-items: center;
+}
+.book.featured .cover { aspect-ratio: 16 / 9; background: #fffdf7; }
+.book.featured .cover img { object-fit: cover; background: #fffdf7; }
+.book.featured .info { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.book.featured h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+.badge-new {
+  position: absolute; top: 10px; left: 10px; z-index: 1;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; line-height: 1;
+  background: var(--buy); color: #1d1a24; border: 3px solid #1d1a24; border-radius: 999px;
+  padding: 6px 14px; box-shadow: 3px 3px 0 #1d1a24; transform: rotate(-6deg);
+}
+.price { font-weight: 800; color: var(--ink); font-size: 1.05rem; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.book h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; margin: 0; line-height: 1.15; }
+.book p { margin: 0; color: var(--ink-soft); font-size: 0.98rem; }
+.tag {
+  align-self: flex-start; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .08em; padding: 3px 10px; border-radius: 999px;
+  background: var(--tint); color: #1d1a24; border: 2px solid var(--ink);
+}
+.buy {
+  margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--buy); color: var(--buy-ink); border: 3px solid var(--ink); border-radius: 10px;
+  padding: 12px 16px; font-weight: 800; font-size: 1.05rem; text-decoration: none;
+  box-shadow: 3px 3px 0 var(--ink); transition: transform .1s ease, box-shadow .1s ease;
+}
+a.buy:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+a.buy:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.buy.soon {
+  background: var(--paper-2); color: var(--ink-soft); border-style: dashed;
+  box-shadow: none; cursor: not-allowed; opacity: .85;
+}
+a:focus-visible { outline: 3px dashed var(--c-mermaid); outline-offset: 4px; }
+
+.how {
+  margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px;
+  border-top: 3px dashed var(--ink); padding-top: 32px;
+}
+.how div { min-width: 0; }
+.how h4 { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; margin: 0 0 6px; }
+.how p { margin: 0; color: var(--ink-soft); }
+
+footer { margin-top: 48px; padding-top: 20px; border-top: 2px solid var(--ink); color: var(--ink-soft); font-size: 0.9rem; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 1000px) {
+  .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .hero { grid-template-columns: 1fr; gap: 20px; padding-block: 8px 28px; }
+  .book.featured { grid-template-columns: 1fr; gap: 14px; }
+  .shelf { gap: 24px; }
+  h2.section { font-size: 1.7rem; }
+  .how { margin-top: 44px; }
+  .crayons { max-width: 300px; }
+  .shelf { grid-template-columns: 1fr; }
+  .how { grid-template-columns: 1fr; }
+}
+@media (hover: none) {
+  .book:hover { transform: none; box-shadow: 6px 6px 0 var(--ink); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="#books">Ai<span>Cartoon</span>Guy</a>
+    <a class="nav-link" href="#books">See the books</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Grab a crayon. <span class="scribble">Pick a book.</span></h1>
+      <p>Bold, fun coloring books for every season, from spooky pumpkins to winter critters to mermaids under the sea.</p>
+      <ul class="facts">
+        <li>9 books</li>
+        <li>Printed &amp; shipped by Amazon</li>
+        <li>Great gift</li>
+      </ul>
+    </div>
+    <svg class="crayons" viewBox="0 0 420 300" role="img" aria-label="A row of crayons">
+      <g stroke="currentColor" stroke-width="4" stroke-linejoin="round" style="color:var(--ink)">
+        <g transform="translate(30 40) rotate(-8 30 120)"><path d="M10 60 L30 10 L50 60 Z" fill="var(--c-halloween)"/><rect x="10" y="60" width="40" height="190" rx="4" fill="var(--c-halloween)"/><rect x="10" y="100" width="40" height="22" fill="var(--paper)"/></g>
+        <g transform="translate(100 20) rotate(-3 30 120)"><path d="M10 60 L30 10 L50 60 Z" fill="var(--c-thanks)"/><rect x="10" y="60" width="40" height="190" rx="4" fill="var(--c-thanks)"/><rect x="10" y="100" width="40" height="22" fill="var(--paper)"/></g>
+        <g transform="translate(170 10)"><path d="M10 60 L30 10 L50 60 Z" fill="var(--c-xmas)"/><rect x="10" y="60" width="40" height="190" rx="4" fill="var(--c-xmas)"/><rect x="10" y="100" width="40" height="22" fill="var(--paper)"/></g>
+        <g transform="translate(240 20) rotate(3 30 120)"><path d="M10 60 L30 10 L50 60 Z" fill="var(--c-winter)"/><rect x="10" y="60" width="40" height="190" rx="4" fill="var(--c-winter)"/><rect x="10" y="100" width="40" height="22" fill="var(--paper)"/></g>
+        <g transform="translate(310 40) rotate(8 30 120)"><path d="M10 60 L30 10 L50 60 Z" fill="var(--c-witch)"/><rect x="10" y="60" width="40" height="190" rx="4" fill="var(--c-witch)"/><rect x="10" y="100" width="40" height="22" fill="var(--paper)"/></g>
+      </g>
+    </svg>
+  </section>
+
+  <h2 class="section" id="books">The books</h2>
+  <div class="shelf">
+
+    <article class="book featured" style="--tint: var(--c-anime)">
+      <div class="cover">
+        <span class="badge-new">NEW</span>
+        <img src="images/anime-world.jpg" alt="Anime World Coloring Book: a swordswoman with long flowing hair under a full moon and cherry blossoms" width="800" height="450" decoding="async">
+      </div>
+      <div class="info">
+        <div class="tags"><span class="tag">New</span><span class="tag">For grown-ups</span></div>
+        <h3>Anime World Coloring Book: Warriors, Spirits &amp; More</h3>
+        <p>Anime warriors, spirits and more to color, with bold lines for markers or colored pencils.</p>
+        <span class="price">Paperback · $9.99</span>
+        <!-- ANIME WORLD BUY BUTTON: not live on Amazon yet.
+             When it's live, replace the <span> below with:
+             <a class="buy" href="https://www.amazon.com/dp/ASIN_HERE" target="_blank" rel="noopener">Buy on Amazon →</a> -->
+        <span class="buy soon" aria-disabled="true">Coming soon</span>
+      </div>
+    </article>
+
+    <article class="book" style="--tint: var(--c-halloween)">
+      <div class="cover"><img src="images/halloween.jpg" alt="Spooky Cute Halloween Coloring Book cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">Halloween</span>
+      <h3>Spooky Cute Halloween Coloring Book</h3>
+      <p>Pumpkins, friendly ghosts and little monsters that are more cute than scary.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HKDQQ9K7" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+    <article class="book" style="--tint: var(--c-thanks)">
+      <div class="cover"><img src="images/thanksgiving.jpg" alt="Thanksgiving Coloring Book cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">Thanksgiving</span>
+      <h3>Thanksgiving Coloring Book</h3>
+      <p>Turkeys, harvest tables and fall leaves to color around the holiday.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HKNQ5CZ5" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+    <article class="book" style="--tint: var(--c-xmas)">
+      <div class="cover"><img src="images/christmas.jpg" alt="Christmas Coloring Book cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">Christmas</span>
+      <h3>Christmas Coloring Book</h3>
+      <p>Big, bold cartoon pages full of trees, presents and holiday cheer.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HKQ5DT1C" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+    <article class="book" style="--tint: var(--c-winter)">
+      <div class="cover"><img src="images/cozy-winter-critters.jpg" alt="Cozy Winter Critters cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">Winter</span>
+      <h3>Cozy Winter Critters</h3>
+      <p>Bundled-up animals, scarves and snowy days to color when it's cold out.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HMHXZV2C" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+    <article class="book" style="--tint: var(--c-mermaid)">
+      <div class="cover"><img src="images/mermaid-shipwreck.jpg" alt="Mermaid Shipwreck cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">Under the sea</span>
+      <h3>Mermaid Shipwreck</h3>
+      <p>Mermaids, sunken ships and treasure waiting at the bottom of the sea.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HLH48LMY" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+    <article class="book" style="--tint: var(--c-witch)">
+      <div class="cover"><img src="images/witching-hour.jpg" alt="Witching Hour cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">For grown-ups</span>
+      <h3>Witching Hour</h3>
+      <p>A moody Halloween coloring book made for adults who like it a little darker.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HKL4271X" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+    <article class="book" style="--tint: var(--c-pinup)">
+      <div class="cover"><img src="images/pinup-guys.jpg" alt="PinUp Guys cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">For grown-ups</span>
+      <h3>PinUp Guys</h3>
+      <p>A pin-up coloring book for grown-ups, starring the guys.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HL61PG91" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+    <article class="book" style="--tint: var(--c-pinup)">
+      <div class="cover"><img src="images/pinup-dolls.jpg" alt="PinUp Dolls cover" width="600" height="776" loading="lazy" decoding="async"></div>
+      <span class="tag">For grown-ups</span>
+      <h3>PinUp Dolls</h3>
+      <p>A pin-up coloring book for grown-ups, starring the dolls.</p>
+      <a class="buy" href="https://www.amazon.com/dp/B0HKG9XXPP" target="_blank" rel="noopener">Buy on Amazon →</a>
+    </article>
+
+  </div>
+
+  <section class="how">
+    <div><h4>Tap “Buy on Amazon”</h4><p>Each button takes you straight to that book on Amazon.</p></div>
+    <div><h4>Checkout like normal</h4><p>Amazon handles payment, printing and shipping.</p></div>
+    <div><h4>Start coloring</h4><p>Grab your crayons, pencils or markers and have fun.</p></div>
+  </section>
+
+  <footer>
+    <span>© 2026 AiCartoonGuy</span>
+    <span>aicartoonguy.com</span>
+  </footer>
+</div>
+</body>
+</html>
